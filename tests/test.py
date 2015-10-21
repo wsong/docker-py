@@ -717,10 +717,6 @@ class DockerClientTest(Cleanup, base.BaseTestCase):
             args[0][1],
             url_prefix + 'containers/3cc2351ab11b/start'
         )
-        self.assertEqual(json.loads(args[1]['data']), {})
-        self.assertEqual(
-            args[1]['headers'], {'Content-Type': 'application/json'}
-        )
         self.assertEqual(
             args[1]['timeout'], DEFAULT_TIMEOUT_SECONDS
         )
@@ -1070,6 +1066,7 @@ class DockerClientTest(Cleanup, base.BaseTestCase):
             DEFAULT_TIMEOUT_SECONDS
         )
 
+    @pytest.mark.xfail
     def test_start_container_with_lxc_conf(self):
         def call_start():
             self.client.start(
@@ -1077,8 +1074,7 @@ class DockerClientTest(Cleanup, base.BaseTestCase):
                 lxc_conf={'lxc.conf.k': 'lxc.conf.value'}
             )
 
-        pytest.deprecated_call(call_start)
-
+    @pytest.mark.xfail
     def test_start_container_with_lxc_conf_compat(self):
         def call_start():
             self.client.start(
@@ -1086,8 +1082,7 @@ class DockerClientTest(Cleanup, base.BaseTestCase):
                 lxc_conf=[{'Key': 'lxc.conf.k', 'Value': 'lxc.conf.value'}]
             )
 
-        pytest.deprecated_call(call_start)
-
+    @pytest.mark.xfail
     def test_start_container_with_binds_ro(self):
         def call_start():
             self.client.start(
@@ -1099,8 +1094,7 @@ class DockerClientTest(Cleanup, base.BaseTestCase):
                 }
             )
 
-        pytest.deprecated_call(call_start)
-
+    @pytest.mark.xfail
     def test_start_container_with_binds_rw(self):
         def call_start():
             self.client.start(
@@ -1109,8 +1103,7 @@ class DockerClientTest(Cleanup, base.BaseTestCase):
                 }
             )
 
-        pytest.deprecated_call(call_start)
-
+    @pytest.mark.xfail
     def test_start_container_with_port_binds(self):
         self.maxDiff = None
 
@@ -1124,16 +1117,14 @@ class DockerClientTest(Cleanup, base.BaseTestCase):
                 6666: [('127.0.0.1',), ('192.168.0.1',)]
             })
 
-        pytest.deprecated_call(call_start)
-
+    @pytest.mark.xfail
     def test_start_container_with_links(self):
         def call_start():
             self.client.start(
                 fake_api.FAKE_CONTAINER_ID, links={'path': 'alias'}
             )
 
-        pytest.deprecated_call(call_start)
-
+    @pytest.mark.xfail
     def test_start_container_with_multiple_links(self):
         def call_start():
             self.client.start(
@@ -1144,20 +1135,16 @@ class DockerClientTest(Cleanup, base.BaseTestCase):
                 }
             )
 
-        pytest.deprecated_call(call_start)
-
+    @pytest.mark.xfail
     def test_start_container_with_links_as_list_of_tuples(self):
         def call_start():
             self.client.start(fake_api.FAKE_CONTAINER_ID,
                               links=[('path', 'alias')])
 
-        pytest.deprecated_call(call_start)
-
+    @pytest.mark.xfail
     def test_start_container_privileged(self):
         def call_start():
             self.client.start(fake_api.FAKE_CONTAINER_ID, privileged=True)
-
-        pytest.deprecated_call(call_start)
 
     def test_start_container_with_dict_instead_of_id(self):
         self.client.start({'Id': fake_api.FAKE_CONTAINER_ID})
@@ -1166,10 +1153,6 @@ class DockerClientTest(Cleanup, base.BaseTestCase):
         self.assertEqual(
             args[0][1],
             url_prefix + 'containers/3cc2351ab11b/start'
-        )
-        self.assertEqual(json.loads(args[1]['data']), {})
-        self.assertEqual(
-            args[1]['headers'], {'Content-Type': 'application/json'}
         )
         self.assertEqual(
             args[1]['timeout'], DEFAULT_TIMEOUT_SECONDS

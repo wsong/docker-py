@@ -848,8 +848,8 @@ Similar to the `docker start` command, but doesn't support attach options. Use
 
 * container (str): The container to start
 
-**Deprecation warning:** For API version > 1.15, it is highly recommended to
-  provide host config options in the
+**Deprecation warning:** Passing configuration options in `start` is no longer
+  supported. Users are expected to use the
   [`host_config` parameter of `create_container`](#create_container)
 
 ```python
