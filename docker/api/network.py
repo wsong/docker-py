@@ -23,7 +23,7 @@ class NetworkApiMixin(object):
     @minimum_version('1.21')
     def create_network(self, name, driver=None, options=None, ipam=None,
                        check_duplicate=None, internal=False, labels=None,
-                       enable_ipv6=False):
+                       enable_ipv6=False, attachable=False):
         if options is not None and not isinstance(options, dict):
             raise TypeError('options must be a dictionary')
 
@@ -32,7 +32,8 @@ class NetworkApiMixin(object):
             'Driver': driver,
             'Options': options,
             'IPAM': ipam,
-            'CheckDuplicate': check_duplicate
+            'CheckDuplicate': check_duplicate,
+            'Attachable': False,
         }
 
         if labels is not None:
@@ -56,6 +57,12 @@ class NetworkApiMixin(object):
                 raise InvalidVersion('Internal networks are not '
                                      'supported in API version < 1.22')
             data['Internal'] = True
+
+        if attachable:
+            if version_lt(self._version, '1.24'):
+                raise InvalidVersion('Attachable networks are not '
+                                     'supported in API version < 1.24')
+            data['Attachable'] = True
 
         url = self._url("/networks/create")
         res = self._post_json(url, data=data)
